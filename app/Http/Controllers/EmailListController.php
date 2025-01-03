@@ -30,7 +30,13 @@ class EmailListController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'title' => ['required', 'max:255']
+        ]);
+
+        EmailList::query()->create($data);
+
+        return to_route('email-list.index');
     }
 
     /**

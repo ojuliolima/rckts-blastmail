@@ -6,7 +6,7 @@
     </x-slot>
 
     <x-card>
-       <x-form :action="route('email-list.store')" method="patch">
+       <x-form :action="route('email-list.store')" method="post">
 
             <div>
                 <x-input-label for="title" :value="__('Title')" />
