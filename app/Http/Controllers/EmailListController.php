@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EmailList;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EmailListController extends Controller
 {
@@ -30,7 +31,7 @@ class EmailListController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $request->validate([
             'title' => ['required', 'max:255'],
             'file' => ['required', 'file', 'mimes:csv'],
         ]);
@@ -52,10 +53,10 @@ class EmailListController extends Controller
 
         fclose($fileHandle);
 
-        $emailList = EmailList::query()->create([
-            'title' => $request->title
-        ]);
-        $emailList->subscribers()->createMany($items);
+        DB::transaction(function () use ($request, $items) {
+            $emailList = EmailList::query()->create(['title' => $request->title]);
+            $emailList->subscribers()->createMany($items);
+        });
 
         return to_route('email-list.index');
     }
