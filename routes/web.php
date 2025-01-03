@@ -14,7 +14,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/email-list', [EmailListController::class, 'index'])->name('email-list.index');
     Route::get('/email-list/create', [EmailListController::class, 'create'])->name('email-list.create');
-    Route::get('/email-list/store', [EmailListController::class, 'store'])->name('email-list.store');
+    Route::post('/email-list/store', [EmailListController::class, 'store'])->name('email-list.store');
 });
 
 require __DIR__.'/auth.php';
