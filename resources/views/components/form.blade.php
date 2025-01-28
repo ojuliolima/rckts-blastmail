@@ -11,8 +11,11 @@
 
 <form action="{{ $attributes->get('action') }}" {{ $attributes->class(['gap-4 flex flex-col']) }} method="{{ $changedMethod }}">
     @if ($method != 'POST' && $method !== 'GET')
-        @method($method)        
+        @method($method)  
     @endif
-    @csrf
+    @if($method != 'GET')
+        @csrf
+    @endif
+    
     {{ $slot }}
 </form>
