@@ -29,7 +29,7 @@
                 @endforeach   
             </x-slot>
         </x-table>
-
+        {{ $emailLists->links() }}
         @else
         <div class="flex justify-center">
             <x-link-button :href="route('email-list.create')">
