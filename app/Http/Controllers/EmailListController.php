@@ -18,6 +18,7 @@ class EmailListController extends Controller
         $search = request()->search;
 
         $emailList = EmailList::query()
+        ->withCount('subscribers')
         ->when(
             $search, 
             fn(Builder $query) => $query
@@ -25,7 +26,7 @@ class EmailListController extends Controller
                 ->orWhere('id', '=', $search)
         )
         ->paginate(5)
-        ->appends(compact('serach'));
+        ->appends(compact('search'));
 
         return view('email-list.index', [
             'emailLists' => $emailList,
