@@ -7,10 +7,10 @@
 
     <x-card class="space-y-4">
         <div class="flex justify-between">
-            <x-form :action="route('subscribers.index', $emailList)" class="w-2/5" x-data x-ref="form">
+            <x-form :action="route('subscribers.index', $emailList)" x-data x-ref="form" class="w-3/5 flex space-x-4 items-center" flat>
                 <x-input.checkbox name="showTrash" value="1" @click="$refs.form.submit()" :checked="$showTrash"
                     :label="__('Show Deleted Records')" />
-                <x-input.text name="search" :placeholder="__('Search')" :value="$search" />
+                <x-input.text name="search" :placeholder="__('Search')" :value="$search" class="w-full"/>
             </x-form>
         </div>
         <x-table :headers="['#', __('Name'), __('Email'), __('Actions')]">
