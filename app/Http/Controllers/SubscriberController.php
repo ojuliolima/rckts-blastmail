@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmailList;
+use App\Models\Subscriber;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -23,6 +24,13 @@ class SubscriberController extends Controller
                 ->paginate(),
             'search' => $search,
         ]);
+    }
+
+    public function destroy(mixed $list, Subscriber $subscriber)
+    {
+        $subscriber->delete();
+
+        return back()->with('message', __('Subscriber deleted from the list!'));
     }
 
 }

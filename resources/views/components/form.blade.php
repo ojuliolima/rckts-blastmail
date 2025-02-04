@@ -1,5 +1,6 @@
 @props([
     'method' => 'GET',
+    'flat' => false,
 ])
 
 @php
@@ -9,7 +10,7 @@
             : 'POST'
 @endphp
 
-<form action="{{ $attributes->get('action') }}" {{ $attributes->class(['gap-4 flex flex-col']) }} method="{{ $changedMethod }}">
+<form action="{{ $attributes->get('action') }}" {{ $attributes->class(['gap-4 flex flex-col' => !$flat]) }} method="{{ $changedMethod }}">
     @if ($method != 'POST' && $method !== 'GET')
         @method($method)  
     @endif
