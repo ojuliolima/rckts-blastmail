@@ -8,12 +8,12 @@
     <x-card class="space-y-4">
         <div class="flex justify-between">
             <x-form :action="route('subscribers.index', $emailList)" class="w-2/5" x-data x-ref="form">
-                <label for="show_trash" class="inline-flex items-center">
-                    <input id="show_trash" type="checkbox" value='1' @click="$refs.form.submit()" @if ($showTrash) checked @endif
-                        class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800"
-                        name="showTrash">
-                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Show Deleted Records') }}</span>
-                </label>
+                <x-checkbox-input name="showTrash"
+                    value="1"
+                    @click="$refs.form.submit()" 
+                    :checked="$showTrash"
+                    :label="__('Show Deleted Records')"
+                />
                 <x-text-input name="search" :placeholder="__('Search')" :value="$search"/>
             </x-form>
         </div>
