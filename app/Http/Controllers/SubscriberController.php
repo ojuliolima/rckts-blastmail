@@ -32,5 +32,4 @@ class SubscriberController extends Controller
 
         return back()->with('message', __('Subscriber deleted from the list!'));
     }
-
 }
