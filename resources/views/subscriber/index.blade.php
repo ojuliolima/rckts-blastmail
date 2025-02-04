@@ -30,7 +30,7 @@
                                 <x-secondary-button type="submit">Delete</x-secondary-button>
                             </x-form>
                             @else
-                                <span class="rounded-md w-fit border border-red-500 bg-red-500 px-2 py-1 text-xs font-medium text-white dark:border-red-500 dark:bg-red-500 dark:text-white">Deleted</span>
+                                <x-badge danger>{{ __('Deleted') }}</x-badge>
                             @endunless
                         </x-table.td>
                     </tr> 
