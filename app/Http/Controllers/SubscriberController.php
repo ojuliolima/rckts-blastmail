@@ -12,10 +12,13 @@ class SubscriberController extends Controller
     public function index(EmailList $emailList)
     {
         $search = request()->search;
+        $showTrash = request()->get('showTrash', false);
 
         return view('subscriber.index', [
             'emailList' => $emailList,
-            'subscribers' => $emailList->subscribers()
+            'subscribers' => $emailList
+                ->subscribers()
+                ->when($showTrash, fn(Builder $query) => $query->withTrashed())
                 ->with('emailList')
                 ->when($search, fn (Builder $query) => $query->where('name', 'like', "%$search%")
                     ->orWhere('email', 'like', "%$search%")
@@ -23,6 +26,7 @@ class SubscriberController extends Controller
                 )
                 ->paginate(),
             'search' => $search,
+            'showTrash' => $showTrash
         ]);
     }
 
