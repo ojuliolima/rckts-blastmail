@@ -24,7 +24,7 @@
                             @unless ($subscriber->trashed())
                                 <x-form :action="route('subscribers.destroy', [$emailList, $subscriber])" method="delete" flat
                                     onsubmit="return confirm('{{ __('Are you sure?') }}')">
-                                    <x-secondary-button type="submit">Delete</x-secondary-button>
+                                    <x-button.secondary type="submit">Delete</x-button.secondary>
                                 </x-form>
                             @else
                                 <x-badge danger>{{ __('Deleted') }}</x-badge>
