@@ -18,6 +18,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/email-list/store', [EmailListController::class, 'store'])->name('email-list.store');
     Route::get('/email-list/{emailList}/subscribers', [SubscriberController::class, 'index'])->name('subscribers.index');
     Route::delete('email-list/{emailList}/subscribers/{subscriber}', [SubscriberController::class, 'destroy'])->name('subscribers.destroy');
+    Route::get('/email-list/{emailList}/subscribers/create', [SubscriberController::class, 'create'])->name('subscribers.create');
+    Route::post('/email-list/{emailList}/subscribers/store', [SubscriberController::class, 'store'])->name('subscribers.store');
 });
 
 require __DIR__.'/auth.php';
