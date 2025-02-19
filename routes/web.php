@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/email-list/{emailList}/subscribers/create', [SubscriberController::class, 'create'])->name('subscribers.create');
     Route::post('/email-list/{emailList}/subscribers/store', [SubscriberController::class, 'store'])->name('subscribers.store');
 
-    Route::resource('template', TemplateController::class);
+    Route::resource('templates', TemplateController::class);
 
     Route::resource('campaigns', CampaignController::class)->only(['index', 'create', 'destroy']);
 });

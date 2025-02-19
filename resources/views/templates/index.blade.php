@@ -26,14 +26,14 @@
                             <div class="flex items-center space-x-4">
                                 <x-button.link secondary :href="route('templates.show', $template)">{{ __('Preview') }}</x-button.link>
                                 <x-button.link secondary :href="route('templates.edit', $template)">{{ __('Edit') }}</x-button.link>
-    
+
                                 @unless ($template->trashed())
-                                <div>
-                                    <x-form :action="route('templates.destroy', $template)" method="delete" flat
-                                        onsubmit="return confirm('{{ __('Are you sure?') }}')">
-                                        <x-button.secondary type="submit">{{ __('Delete') }}</x-button.secondary>
-                                    </x-form>
-                                </div>
+                                    <div>
+                                        <x-form :action="route('templates.destroy', $template)" method="delete" flat
+                                            onsubmit="return confirm('{{ __('Are you sure?') }}')">
+                                            <x-button.secondary type="submit">{{ __('Delete') }}</x-button.secondary>
+                                        </x-form>
+                                    </div>
                                 @else
                                     <x-badge danger>{{ __('Deleted') }}</x-badge>
                                 @endunless
