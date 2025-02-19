@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Template;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class TemplateSeeder extends Seeder
 {
@@ -12,6 +13,6 @@ class TemplateSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Template::factory()->count(10)->create();
     }
 }
