@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Campaing;
+use App\Models\Campaign;
 use App\Models\Template;
 use App\Models\EmailList;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class CampaingSeeder extends Seeder
+class CampaignSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -19,7 +19,7 @@ class CampaingSeeder extends Seeder
             $emailList = EmailList::query()->inRandomOrder()->first();
             $template = Template::query()->inRandomOrder()->first();
             
-            Campaing::factory()->create([
+            Campaign::factory()->create([
                 'email_list_id' => $emailList->id,
                 'template_id' => $template->id,
             ]);

@@ -7,9 +7,9 @@ use App\Models\EmailList;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Campaing>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Campaign>
  */
-class CampaingFactory extends Factory
+class CampaignFactory extends Factory
 {
     /**
      * Define the model's default state.
