@@ -21,6 +21,9 @@
                     <x-nav-link :href="route('template.index')" :active="request()->routeIs('template.*')">
                         {{ __('Templates') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('campaigns.index')" :active="request()->routeIs('campaign.*')">
+                        {{ __('Campaign') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -83,6 +86,10 @@
             
             <x-responsive-nav-link :href="route('template.index')" :active="request()->routeIs('template.*')">
                 {{ __('Templates') }}
+            </x-responsive-nav-link>
+            
+            <x-responsive-nav-link :href="route('campaigns.index')" :active="request()->routeIs('campaigns.*')">
+                {{ __('Campaigns') }}
             </x-responsive-nav-link>
         </div>
 

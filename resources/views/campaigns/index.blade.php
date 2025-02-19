@@ -1,0 +1,35 @@
+<x-layouts.app>
+    <x-slot name="header">
+        <x-h2>
+            {{ __('Campaigns') }}
+        </x-h2>
+    </x-slot>
+
+    <x-card class="space-y-4">
+        <div class="flex justify-between">
+            <x-form :action="route('campaigns.index')" x-data x-ref="form" class="w-3/5 flex space-x-4 items-center" flat>
+                <x-input.checkbox name="withTrashed" value="1" @click="$refs.form.submit()" :checked="$withTrashed"
+                    :label="__('Show Deleted Records')" />
+                <x-input.text name="search" :placeholder="__('Search')" :value="$search" class="w-full" />
+            </x-form>
+        </div>
+        <x-table :headers="['#', __('Name'), __('Actions')]">
+            <x-slot name="body">
+                @foreach ($campaigns as $campaign)
+                    <tr>
+                        <x-table.td class="w-1">{{ $campaign->id }}</x-table.td>
+                        <x-table.td>{{ $campaign->name }}</x-table.td>
+                        <x-table.td class="w-1">
+                            <div class="flex items-center space-x-4">   
+                                @unless (!$campaign->trashed())
+                                    <x-badge danger>{{ __('Deleted') }}</x-badge>
+                                @endunless
+                            </div>
+                        </x-table.td>
+                    </tr>
+                @endforeach
+            </x-slot>
+        </x-table>
+        {{ $campaigns->links() }}
+    </x-card>
+</x-layouts.app>

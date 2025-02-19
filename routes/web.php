@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CampaignController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TemplateController;
@@ -23,6 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/email-list/{emailList}/subscribers/store', [SubscriberController::class, 'store'])->name('subscribers.store');
 
     Route::resource('template', TemplateController::class);
+
+    Route::resource('campaigns', CampaignController::class)->only(['index', 'create', 'destroy']);
 });
 
 require __DIR__.'/auth.php';
