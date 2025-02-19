@@ -27,10 +27,12 @@
                             <x-button.link secondary :href="route('template.edit', $template)">{{ __('Edit') }}</x-button.link>
 
                             @unless ($template->trashed())
+                            <div>
                                 <x-form :action="route('template.destroy', $template)" method="delete" flat
                                     onsubmit="return confirm('{{ __('Are you sure?') }}')">
                                     <x-button.secondary type="submit">{{ __('Delete') }}</x-button.secondary>
                                 </x-form>
+                            </div>
                             @else
                                 <x-badge danger>{{ __('Deleted') }}</x-badge>
                             @endunless
