@@ -24,9 +24,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/email-list/{emailList}/subscribers/store', [SubscriberController::class, 'store'])->name('subscribers.store');
 
     Route::resource('templates', TemplateController::class);
-
-    Route::resource('campaigns', CampaignController::class)->only(['index', 'create', 'destroy']);
+    Route::resource('campaigns', CampaignController::class)->only(['index', 'destroy']);
+    Route::get('/campaigns/create/{tab?}', [CampaignController::class, 'create'])->name('campaigns.create');
+    Route::post('/campaigns/create/{tab?}', [CampaignController::class, 'store']);
     Route::patch('/campaigns/{campaign}/restore', [CampaignController::class, 'restore'])->withTrashed()->name('campaigns.restore');
+  
 });
 
 require __DIR__.'/auth.php';
