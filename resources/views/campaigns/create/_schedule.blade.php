@@ -1,11 +1,11 @@
 <div class="flex flex-col gap-4">
-    <div>
-        <div>{{ __('From') }}:----@---.com</div>
-        <div>{{ __('To') }}: #count de emails do email_list_id</div>
+    <div class="space-y-2">
+        <div>{{ __('From') }}: {{ config('mail.from.address') }}</div>
+        <div>{{ __('To') }}: <x-badge> {{ $countEmails }} {{ $countEmails > 1 ? 'emails' : 'email'  }} </x-badge></div>
         <div>{{ __('Subject:') }} {{ $data['subject'] }}</div>
-        <div>Template: #template</div>
+        <div>{{ __('Template:') }} <x-badge> {{ $template }}</x-badge></div>
     </div>
-    <hr/>
+    <hr class="my-3 opacity-20"/>
     <div x-data="{ show: '{{ data_get($data, 'send_when', 'now') }}'}">
         <x-input-label :value="__('Schedule Delivery')" />
         <div class="flex flex-col gap-2 my-2">
