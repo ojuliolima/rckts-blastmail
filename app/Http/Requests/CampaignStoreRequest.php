@@ -25,7 +25,7 @@ class CampaignStoreRequest extends FormRequest
         $tab = $this->route('tab');
         $rules = [];
 
-        $map = array_merge([
+        $map = array_merge(session()->get('campaigns::create', [
             'name' => null,
             'subject' => null,
             'email_list_id' => null,
@@ -34,7 +34,8 @@ class CampaignStoreRequest extends FormRequest
             'track_click' => null,
             'track_open' => null,
             'send_at' => null,
-        ], request()->all());
+            'send_when' => 'now'
+        ]), $this->all());
 
         if (blank($tab)) {
             $rules = [
@@ -50,13 +51,19 @@ class CampaignStoreRequest extends FormRequest
         }
 
         if ($tab == 'schedule') {
-            $rules = ['send_at' => ['required', 'date']];
+            if($map['send_when'] == 'now') {
+                $map['send_at'] = now()->format('Y-m-d');
+            } elseif ($map['send_when'] == 'later') {
+                $rules = ['send_at' => ['required', 'date', 'after:today']];
+            } else {
+                $rules = ['send_when' => ['required']];
+            }
         }
 
-        $session = session('campaigns::create', $map);
+        session(['campaigns::create' => $map]);
+        $session = session('campaigns::create');
 
         foreach ($session as $key => $value) {
-
             $newValue = data_get($map, $key);
             if($key == 'track_click' || $key == 'track_open') {
                 $session[$key] = $newValue;
@@ -69,7 +76,7 @@ class CampaignStoreRequest extends FormRequest
             $template = Template::find($session['template_id']);
             $session['body'] = $template->body;
         } 
-                
+               
         session()->put('campaigns::create', $session);
 
         return $rules;
@@ -79,6 +86,7 @@ class CampaignStoreRequest extends FormRequest
     {
         $session = session()->get('campaigns::create');
         unset($session['_token']);
+        unset($session['send_when']);
         $session['track_click'] = $session['track_click'] ?: false;
         $session['track_open'] = $session['track_open'] ?: false;
 
