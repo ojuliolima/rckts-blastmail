@@ -1,4 +1,5 @@
 <div class="flex flex-col gap-4">
+    <x-alert success title='Your campaign is ready to be send!'/>
     <div class="space-y-2">
         <div>{{ __('From') }}: {{ config('mail.from.address') }}</div>
         <div>{{ __('To') }}: <x-badge> {{ $countEmails }} {{ $countEmails > 1 ? 'emails' : 'email'  }} </x-badge></div>
