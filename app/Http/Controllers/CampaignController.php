@@ -68,6 +68,13 @@ class CampaignController extends Controller
             ]));
     }
 
+    public function show(Campaign $campaign, string $what)
+    {
+        abort_unless(in_array($what, ['statistics', 'open', 'clicked']), 404, 'Rota não encontrada');
+
+        return view('campaigns.show.'.$what);
+    }
+
     public function store(CampaignStoreRequest $request, ?string $tab = null)
     {
         $data = $request->getData();
