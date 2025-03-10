@@ -36,9 +36,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/campaigns/create/{tab?}', [CampaignController::class, 'create'])->middleware(CampaignCreateSessionControl::class)->name('campaigns.create');
     Route::post('/campaigns/create/{tab?}', [CampaignController::class, 'store']);
     Route::patch('/campaigns/{campaign}/restore', [CampaignController::class, 'restore'])->withTrashed()->name('campaigns.restore');
-    Route::get('/campaigns/{campaign}/emails', function(Campaign $campaign) {
-        return (new EmailCampaign($campaign))->render();
-    });
 
 });
 
