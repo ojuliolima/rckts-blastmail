@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     Route::get('/email-list', [EmailListController::class, 'index'])->name('email-list.index');
     Route::get('/email-list/create', [EmailListController::class, 'create'])->name('email-list.create');
     Route::post('/email-list/store', [EmailListController::class, 'store'])->name('email-list.store');
@@ -28,14 +29,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/email-list/{emailList}/subscribers/store', [SubscriberController::class, 'store'])->name('subscribers.store');
 
     Route::resource('templates', TemplateController::class);
+
     Route::resource('campaigns', CampaignController::class)->only(['index', 'destroy']);
-    Route::get('/campaigns/create/{tab?}', [CampaignController::class, 'create'])
-        ->middleware(CampaignCreateSessionControl::class)
-        ->name('campaigns.create');
-        
+    Route::get('/campaigns/create/{tab?}', [CampaignController::class, 'create'])->middleware(CampaignCreateSessionControl::class)->name('campaigns.create');
     Route::post('/campaigns/create/{tab?}', [CampaignController::class, 'store']);
     Route::patch('/campaigns/{campaign}/restore', [CampaignController::class, 'restore'])->withTrashed()->name('campaigns.restore');
-    
     Route::get('/campaigns/{campaign}/emails', function(Campaign $campaign) {
         return (new EmailCampaign($campaign))->render();
     });
