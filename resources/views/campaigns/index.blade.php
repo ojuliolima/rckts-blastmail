@@ -22,7 +22,7 @@
                     <tr>
                         <x-table.td class="w-1">{{ $campaign->id }}</x-table.td>
                         <x-table.td>
-                            <a href="{{ route('campaigns.show', $campaign) }}">
+                            <a href="{{ route('campaigns.show', $campaign) }}" class='hover:underline'>
                                 {{ $campaign->name }}
                             </a>
                         </x-table.td>
