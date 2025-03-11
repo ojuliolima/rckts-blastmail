@@ -72,7 +72,7 @@ class CampaignController extends Controller
     {
         abort_unless(in_array($what, ['statistics', 'open', 'clicked']), 404, 'Rota não encontrada');
 
-        return view('campaigns.show.'.$what);
+        return view('campaigns.show', compact('compact', 'what'));
     }
 
     public function store(CampaignStoreRequest $request, ?string $tab = null)
