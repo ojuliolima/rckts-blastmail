@@ -71,12 +71,12 @@ class CampaignController extends Controller
     public function show(Campaign $campaign, ?string $what = null)
     {
         if(is_null($what)) {
-            return to_route('campaigns.show.', ['campaign' => $campaign, 'what' => 'statistics']);
+            return to_route('campaigns.show', ['campaign' => $campaign, 'what' => 'statistics']);
         }
         
         abort_unless(in_array($what, ['statistics', 'open', 'clicked']), 404, 'Rota não encontrada');
 
-        return view('campaigns.show', compact('compact', 'what'));
+        return view('campaigns.show', compact('campaign', 'what'));
     }
 
     public function store(CampaignStoreRequest $request, ?string $tab = null)
