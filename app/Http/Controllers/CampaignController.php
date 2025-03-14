@@ -5,12 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Campaign;
 use App\Models\Template;
 use App\Models\EmailList;
-use App\Mail\EmailCampaign;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\CampaignStoreRequest;
 use App\Jobs\SendEmailCampaign;
-use Carbon\Carbon;
 use Illuminate\Support\Traits\Conditionable;
 
 class CampaignController extends Controller
@@ -75,6 +72,8 @@ class CampaignController extends Controller
         }
         
         abort_unless(in_array($what, ['statistics', 'open', 'clicked']), 404, 'Rota não encontrada');
+
+        $search = request()->search;
 
         return view('campaigns.show', compact('campaign', 'what'));
     }
