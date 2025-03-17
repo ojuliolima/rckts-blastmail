@@ -2,39 +2,36 @@
 
 namespace App\Jobs;
 
-use Carbon\Carbon;
-use App\Models\Campaign;
 use App\Mail\EmailCampaign;
+use App\Models\Campaign;
+use App\Models\CampaignMail;
+use App\Models\Subscriber;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendEmailCampaign implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
 
     /**
      * Create a new job instance.
      */
     public function __construct(
-        public Campaign $campaign
-    )
-    {
-        //
-    }
+        public Campaign $campaign,
+        public Subscriber $subscriber,
+    ){}
 
     /**
      * Execute the job.
      */
     public function handle(): void
     {
-        foreach($this->campaign->emailList->subscribers as $subscriber) {
-            Mail::to($subscriber->email)
-                ->later(
-                    Carbon::parse($this->campaign->send_at),
-                    new EmailCampaign($this->campaign)
-                );
-        }
+        CampaignMail::query()
+                ->create(['campaign_id' => $this->campaign->id, 'subscriber_id' => $this->subscriber->id, 'sent_at' => $this->campaign->send_at,]);
+
+            Mail::to($this->subscriber->email)
+                ->later(Carbon::parse($this->campaign->send_at), new EmailCampaign($this->campaign));
     }
 }
