@@ -7,28 +7,23 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CampaignShowRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool | RedirectResponse
+    public function checkWhat(): RedirectResponse | false 
     {
-        $campaign = $this->route('campaign');
-        $what = $this->route('what');
-
-        if(is_null($what)) {
-            return to_route('campaigns.show', ['campaign' => $campaign, 'what' => 'statistics']);
+        if(is_null($this->route('what'))) {
+            return to_route('campaigns.show', ['campaign' => $this->route('campaign'), 'what' => 'statistics']);
         }
-        
+
+        return false;
+    }
+
+    public function authorize(): bool
+    {
+        $what = $this->route('what') ?: 'statistics';
         abort_unless(in_array($what, ['statistics', 'open', 'clicked']), 404, 'Rota não encontrada');
 
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
