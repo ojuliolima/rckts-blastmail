@@ -73,7 +73,15 @@ class CampaignController extends Controller
         }
         $search = request()->search;
 
-        $query = $campaign->mails()->statistics();
+        $query = $campaign->mails()
+            ->when($what == 'statistics', fn(Builder $query) => $query->statistics())
+            ->when($what == 'open', fn(Builder $query) => $query->openings($search))
+            ->when($what == 'clicked', fn(Builder $query) => $query->clicks($search))
+            ->paginate(5)->withQueryString();
+
+        if($what == 'statistics') {
+            $query = $query->first()->toArray();
+        }
 
         return view('campaigns.show', compact('campaign', 'what', 'search', 'query'));
     }
