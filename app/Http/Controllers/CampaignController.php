@@ -77,7 +77,7 @@ class CampaignController extends Controller
             ->when($what == 'statistics', fn(Builder $query) => $query->statistics())
             ->when($what == 'open', fn(Builder $query) => $query->openings($search))
             ->when($what == 'clicked', fn(Builder $query) => $query->clicks($search))
-            ->paginate(5)->withQueryString();
+            ->simplePaginate(5)->withQueryString();
 
         if($what == 'statistics') {
             $query = $query->first()->toArray();

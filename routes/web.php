@@ -2,14 +2,30 @@
 
 use App\Models\Campaign;
 use App\Mail\EmailCampaign;
-use Illuminate\Support\Facades\Mail;
+use App\Jobs\SendEmailsCampaign;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\EmailListController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Middleware\CampaignCreateSessionControl;
+
+//para testar a abertura de email
+Route::get('/email', function()
+{
+    //busque pelo id da campanha
+    $campaign = Campaign::find(15);
+    $mail = $campaign->mails()->first();
+    $email = new EmailCampaign($campaign, $mail);
+
+    SendEmailsCampaign::dispatchAfterResponse($campaign);
+
+    return $email->render();
+});
+
+Route::get('/t/{mail}/o', [TrackingController::class, 'openings'])->name('tracking.openings');
 
 Route::view('/', 'welcome');
 
