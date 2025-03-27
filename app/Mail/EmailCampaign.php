@@ -39,6 +39,22 @@ class EmailCampaign extends Mailable
     {
         return new Content(
             markdown: 'mail.email-campaign',
+            with: [
+                'body' => $this->getBody()
+            ]
         );
+    }
+
+    public function getBody()
+    {
+        $pattern = '/href="([^"]*)"/';
+        $body = $this->campaign->body;
+        preg_match_all($pattern, $body, $matches);
+        foreach ($matches[1] as $index => $oldValue) {
+            $newValue = 'href="' . route('tracking.clicks', ['mail' => $this->mail, 'f' => $oldValue]) . '"';
+            $body = str_replace($matches[0][$index], $newValue, $body);
+        }
+
+        return $body;
     }
 }

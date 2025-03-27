@@ -16,7 +16,7 @@ use App\Http\Middleware\CampaignCreateSessionControl;
 Route::get('/email', function()
 {
     //busque pelo id da campanha
-    $campaign = Campaign::find(15);
+    $campaign = Campaign::find(3);
     $mail = $campaign->mails()->first();
     $email = new EmailCampaign($campaign, $mail);
 
@@ -26,6 +26,7 @@ Route::get('/email', function()
 });
 
 Route::get('/t/{mail}/o', [TrackingController::class, 'openings'])->name('tracking.openings');
+Route::get('/t/{mail}/c', [TrackingController::class, 'clicks'])->name('tracking.clicks');
 
 Route::view('/', 'welcome');
 
