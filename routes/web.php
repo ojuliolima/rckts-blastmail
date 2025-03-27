@@ -12,27 +12,14 @@ use App\Http\Controllers\EmailListController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Middleware\CampaignCreateSessionControl;
 
-//para testar a abertura de email
-Route::get('/email', function()
-{
-    //busque pelo id da campanha
-    $campaign = Campaign::find(3);
-    $mail = $campaign->mails()->first();
-    $email = new EmailCampaign($campaign, $mail);
-
-    SendEmailsCampaign::dispatchAfterResponse($campaign);
-
-    return $email->render();
-});
-
 Route::get('/t/{mail}/o', [TrackingController::class, 'openings'])->name('tracking.openings');
 Route::get('/t/{mail}/c', [TrackingController::class, 'clicks'])->name('tracking.clicks');
 
 Route::view('/', 'welcome');
 
-Route::view('/dashboard','dashboard')->middleware(['auth', 'verified'])->name('dashboard');
+Route::redirect('/dashboard','dashboard')->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -47,7 +34,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('templates', TemplateController::class);
 
-    Route::get('/campaigns', [CampaignController::class, 'index'])->name('campaigns.index');
+    Route::get('/', [CampaignController::class, 'index'])->name('campaigns.index');
     Route::delete('/campaigns/{campaign}', [CampaignController::class, 'destroy'])->name('campaigns.destroy');
     Route::get('/campaigns/create/{tab?}', [CampaignController::class, 'create'])->middleware(CampaignCreateSessionControl::class)->name('campaigns.create');
     Route::get('/campaigns/{campaign}/{what?}', [CampaignController::class, 'show'])->name('campaigns.show')->withTrashed();
