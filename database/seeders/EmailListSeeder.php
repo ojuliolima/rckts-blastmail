@@ -14,9 +14,9 @@ class EmailListSeeder extends Seeder
      */
     public function run(): void
     {
-        EmailList::factory()->count(50)->create()
+        EmailList::factory()->count(10)->create()
         ->each(function (EmailList $list) {
-            Subscriber::factory()->count(rand(50, 200))->create(['email_list_id' => $list->id]);
+            Subscriber::factory()->count(rand(10, 60))->create(['email_list_id' => $list->id]);
         });
     }
 }
