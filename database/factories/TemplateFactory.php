@@ -18,7 +18,7 @@ class TemplateFactory extends Factory
     {
         return [
             'name' => fake()->words(3, true),
-            'body' => fake()->sentences(3, true) . "<a href='https://www.google.com/'>Clique aqui</a>",
+            'body' => fake()->sentences(3, true),
         ];
     }
 }
