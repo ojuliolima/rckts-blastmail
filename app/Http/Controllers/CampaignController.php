@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CampaignShowRequest;
 use App\Models\Campaign;
 use App\Models\Template;
 use App\Models\EmailList;
-use App\Mail\EmailCampaign;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\CampaignStoreRequest;
-use App\Jobs\SendEmailCampaign;
-use Carbon\Carbon;
+use App\Jobs\SendEmailsCampaign;
 use Illuminate\Support\Traits\Conditionable;
 
 class CampaignController extends Controller
@@ -68,6 +66,26 @@ class CampaignController extends Controller
             ]));
     }
 
+    public function show(CampaignShowRequest $request, Campaign $campaign, ?string $what = null)
+    {
+        if($redirect = $request->checkWhat()) {
+            return $redirect;
+        }
+        $search = request()->search;
+
+        $query = $campaign->mails()
+            ->when($what == 'statistics', fn(Builder $query) => $query->statistics())
+            ->when($what == 'open', fn(Builder $query) => $query->openings($search))
+            ->when($what == 'clicked', fn(Builder $query) => $query->clicks($search))
+            ->simplePaginate(5)->withQueryString();
+
+        if($what == 'statistics') {
+            $query = $query->first()->toArray();
+        }
+
+        return view('campaigns.show', compact('campaign', 'what', 'search', 'query'));
+    }
+
     public function store(CampaignStoreRequest $request, ?string $tab = null)
     {
         $data = $request->getData();
@@ -76,7 +94,7 @@ class CampaignController extends Controller
         if($tab == 'schedule') {
             $campaign = Campaign::create($data);
 
-           SendEmailCampaign::dispatchAfterResponse($campaign);
+           SendEmailsCampaign::dispatchAfterResponse($campaign);
         }
 
         return response()->redirectTo($toRoute);
