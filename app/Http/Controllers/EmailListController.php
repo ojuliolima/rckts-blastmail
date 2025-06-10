@@ -83,35 +83,11 @@ class EmailListController extends Controller
         return $subscribers;
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(EmailList $emailList)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(EmailList $emailList)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, EmailList $emailList)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(EmailList $emailList)
     {
-        //
+        $emailList->subscribers()->delete();
+        $emailList->delete();
+
+        return to_route('email-list.index');
     }
 }

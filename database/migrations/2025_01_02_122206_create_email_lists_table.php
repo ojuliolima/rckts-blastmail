@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('email_lists', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
