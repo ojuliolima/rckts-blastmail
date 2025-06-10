@@ -2,15 +2,24 @@
 
 namespace Tests\Feature\EmailList;
 
-use App\Models\EmailList;
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\EmailList;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ListTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->login();
+    }
+
     public function test_needs_to_be_authenticated()
     {
+        Auth::logout();
+        
         $this->getJson(route('email-list.index'))->assertUnauthorized();
 
         $user = User::factory()->create();
@@ -22,8 +31,6 @@ class ListTest extends TestCase
     public function test_it_should_be_paginate()
     {
         //arrange
-        $user = User::factory()->create();
-        $this->actingAs($user);
         EmailList::factory()->count(40)->create();
 
         //act
@@ -41,8 +48,6 @@ class ListTest extends TestCase
     public function test_it_should_be_able_to_search_a_list()
     {
         //arrange
-        $user = User::factory()->create();
-        $this->actingAs($user);
         EmailList::factory()->count(10)->create();
         EmailList::factory()->create(['title' => 'Title 1']);
         $emailList = EmailList::factory()->create(['title' => 'Title Testing 2']);
