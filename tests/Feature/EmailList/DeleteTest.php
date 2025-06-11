@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Feature\Feature\EmailList;
-
 use App\Models\EmailList;
 use App\Models\Subscriber;
 use function Pest\Laravel\delete;
 use function Pest\Laravel\assertSoftDeleted;
+
+pest()->group('email-list');
 
 it('it should be able to delete an email list', function () {
     // arrange
