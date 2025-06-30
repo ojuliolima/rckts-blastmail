@@ -32,7 +32,7 @@ it('should be possible see the entire list of campaigns', function () {
 
 it('should be able to search a campaign by name', function () {
     Campaign::factory()->count(5)->create();
-    Campaign::factory()->create(['name' => 'Teste']);
+    Campaign::factory()->create(['name' => 'Teste', 'deleted_at' => null]);
 
     get(route('campaigns.index', ['search' => 'Teste']))
         ->assertViewHas('campaigns', function ($value) {
@@ -44,17 +44,18 @@ it('should be able to search a campaign by name', function () {
 
 it('should be able to search by id', function () {
     Campaign::factory()->create([
-        'name' => 'Modelo Teste',
+        'name' => 'foo bar',
+        'deleted_at' => null
     ]);
 
     Campaign::factory()->create([
-        'name' => 'Modelo Teste 2',
+        'name' => 'foo bar 2',
+        'deleted_at' => null
     ]);
-
     get(route('campaigns.index', ['search' => 2]))
     ->assertViewHas('campaigns', function ($value) {
         expect($value)->count(1);
-        expect($value)->first()->id->toBe(2);
+        expect(($value)->first()->id)->toBe(2);
         return true;
     });
 });
