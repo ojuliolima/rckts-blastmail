@@ -72,9 +72,9 @@ class CampaignStoreRequest extends FormRequest
             }
         }
 
-        if(filled($session['template_id']) && $tab !== 'template' && $tab !== 'schedule') {
-            $template = Template::find($session['template_id']);
-            $session['body'] = $template->body;
+        if(($templateId = $session['template_id']) && blank($session['body'])) {
+            $template = Template::query()->find($templateId);
+            $session['body'] = $template?->body;
         } 
                
         session()->put('campaigns::create', $session);
