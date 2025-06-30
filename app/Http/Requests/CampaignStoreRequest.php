@@ -60,8 +60,13 @@ class CampaignStoreRequest extends FormRequest
             }
         }
 
-        session(['campaigns::create' => $map]);
-        $session = session('campaigns::create');
+        $session = session('campaigns::create', $map);
+
+        foreach ($map as $key => $value) {
+            if(!is_null($value)) {
+                $session[$key] = $value;
+            }
+        }
 
         foreach ($session as $key => $value) {
             $newValue = data_get($map, $key);

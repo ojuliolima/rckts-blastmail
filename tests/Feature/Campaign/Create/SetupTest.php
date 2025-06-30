@@ -152,9 +152,9 @@ describe('validations', function () {
     test('name should have a max of 255 characteres', function () {
         post($this->route, ['name' => str_repeat('*', 256),])
             ->assertSessionHasErrors([
-                'name' => __('validation.max.string', ['attribute' => 'name', 'max' => 256]),
+                'name' => __('validation.max.string', ['attribute' => 'name', 'max' => 255]),
             ]);
-    })->todo();
+    });
 
     test('subject should have a max of 40 characters', function () {
         post($this->route, ['subject' => str_repeat('*', 41),])
