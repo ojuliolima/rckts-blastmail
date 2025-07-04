@@ -29,9 +29,13 @@ class SendEmailCampaign implements ShouldQueue
     public function handle(): void
     {
         $mail = CampaignMail::query()
-                ->create(['campaign_id' => $this->campaign->id, 'subscriber_id' => $this->subscriber->id, 'sent_at' => $this->campaign->send_at,]);
+                ->create([
+                    'campaign_id' => $this->campaign->id, 
+                    'subscriber_id' => $this->subscriber->id, 
+                    'sent_at' => $this->campaign->send_at,
+                ]);
 
-        Mail::to($this->subscriber->email)
-                ->later(Carbon::parse($this->campaign->send_at), new EmailCampaign($this->campaign, $mail));
+        $email = (new EmailCampaign($this->campaign, $mail))->delay($this->campaign->send_at);
+        Mail::to($this->subscriber)->queue($email);
     }
 }
