@@ -20,7 +20,7 @@ class CampaignMail extends Model
                         'subscriber', fn (Builder $query) => $query
                             ->where('name', 'like', "%$search%")
                             ->orWhere('email', 'like', "%$search%")
-                    )->orWhere('openings', '=', "%$search%")
+                    )->orWhere('openings', '=', $search)
                 )
                 ->orderByDesc('openings');
     }
@@ -33,7 +33,7 @@ class CampaignMail extends Model
                         'subscriber', fn (Builder $query) => $query
                             ->where('name', 'like', "%$search%")
                             ->orWhere('email', 'like', "%$search%")
-                    )->orWhere('clicks', '=', "%$search%")
+                    )->orWhere('clicks', '=', "$search")
                 )
                 ->orderByDesc('clicks');
     }
