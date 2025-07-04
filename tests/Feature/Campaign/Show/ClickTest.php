@@ -20,7 +20,7 @@ beforeEach(function () {
             )
     )->create();
     $this->campaign = Campaign::factory()->state(['deleted_at' => null])->for($emailList)->create(['send_at' => now()->addDays(2)->format('Y-m-d')]);
-    $this->mail1 = CampaignMail::query()->create(['clicks' => 7, 'openings' => 0, 'campaign_id' => $this->campaign->id, 'subscriber_id' => $emailList->subscribers[0]->id, 'sent_at' => $this->campaign->send_at]);
+    $this->mail1 = CampaignMail::query()->create(['clicks' => 99999, 'openings' => 0, 'campaign_id' => $this->campaign->id, 'subscriber_id' => $emailList->subscribers[0]->id, 'sent_at' => $this->campaign->send_at]);
     $this->mail2 = CampaignMail::query()->create(['clicks' => 5, 'openings' => 23, 'campaign_id' => $this->campaign->id, 'subscriber_id' => $emailList->subscribers[1]->id, 'sent_at' => $this->campaign->send_at]);
     $this->mail3 = CampaignMail::query()->create(['clicks' => 0, 'openings' => 54, 'campaign_id' => $this->campaign->id, 'subscriber_id' => $emailList->subscribers[2]->id, 'sent_at' => $this->campaign->send_at]);
 });
@@ -70,7 +70,7 @@ it('should be possible to filter by email', function () {
 
 it('should be possible to filter by openings', function () {
 
-    get(route('campaigns.show', ['campaign' => $this->campaign, 'what' => 'clicked', 'search' => 7]))
+    get(route('campaigns.show', ['campaign' => $this->campaign, 'what' => 'clicked', 'search' => 99999]))
         ->assertViewHas('what', 'clicked')
         ->assertViewHas('query', function ($query) {
             expect($query)->toHaveCount(1);

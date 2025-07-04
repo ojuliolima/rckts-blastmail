@@ -36,16 +36,16 @@ it('should be possible see the entire list of subscribers', function () {
 
 it('should be able to search a subscriber', function () {
     Subscriber::factory()->count(5)->create(['email_list_id' => $this->emailList->id]);
-    Subscriber::factory()->create([
+    $subscriber = Subscriber::factory()->create([
         'name' => 'John Senna',
         'email' => 'joe@doe.com',
         'email_list_id' => $this->emailList->id
     ]);
 
     get(route('subscribers.index', ['emailList' => $this->emailList, 'search' => 'joe']))
-    ->assertViewHas('subscribers', function ($value) {
+    ->assertViewHas('subscribers', function ($value) use ($subscriber) {
         expect($value)->count(1);
-        expect($value)->first()->id->toBe(6);
+        expect($value)->first()->id->toBe($subscriber->id);
         return true;
     });
 
@@ -65,16 +65,16 @@ it('should be able to search by id', function () {
         'email_list_id' => $this->emailList->id
     ]);
 
-    Subscriber::factory()->create([
+    $subscriber = Subscriber::factory()->create([
         'name' => 'Mary Doe',
         'email' => 'mary@doe.com',
         'email_list_id' => $this->emailList->id
     ]);
 
-    get(route('subscribers.index', ['emailList' => $this->emailList, 'search' => 2]))
-    ->assertViewHas('subscribers', function ($value) {
+    get(route('subscribers.index', ['emailList' => $this->emailList, 'search' => $subscriber->id]))
+    ->assertViewHas('subscribers', function ($value) use ($subscriber) {
         expect($value)->count(1);
-        expect($value)->first()->id->toBe(2);
+        expect($value)->first()->id->toBe($subscriber->id);
         return true;
     });
 });

@@ -33,12 +33,12 @@ it('should be possible see the entire list of templates', function () {
 
 it('should be able to search a template by name', function () {
     Template::factory()->count(5)->create();
-    Template::factory()->create(['name' => 'Teste']);
+    $template = Template::factory()->create(['name' => 'Teste']);
 
     get(route('templates.index', ['search' => 'Teste']))
-        ->assertViewHas('templates', function ($value) {
+        ->assertViewHas('templates', function ($value) use ($template) {
             expect($value)->count(1);
-            expect($value)->first()->id->toBe(6);
+            expect($value)->first()->id->toBe($template->id);
             return true;
         });
 });
@@ -48,14 +48,14 @@ it('should be able to search by id', function () {
         'name' => 'Modelo Teste',
     ]);
 
-    Template::factory()->create([
+    $template = Template::factory()->create([
         'name' => 'Modelo Teste 2',
     ]);
 
     get(route('templates.index', ['search' => 2]))
-    ->assertViewHas('templates', function ($value) {
+    ->assertViewHas('templates', function ($value) use ($template) {
         expect($value)->count(1);
-        expect($value)->first()->id->toBe(2);
+        expect($value)->first()->id->toBe($template->id);
         return true;
     });
 });

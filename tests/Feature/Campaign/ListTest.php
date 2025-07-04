@@ -32,12 +32,12 @@ it('should be possible see the entire list of campaigns', function () {
 
 it('should be able to search a campaign by name', function () {
     Campaign::factory()->count(5)->create();
-    Campaign::factory()->create(['name' => 'Teste', 'deleted_at' => null]);
+    $campaign = Campaign::factory()->create(['name' => 'Teste', 'deleted_at' => null]);
 
     get(route('campaigns.index', ['search' => 'Teste']))
-        ->assertViewHas('campaigns', function ($value) {
+        ->assertViewHas('campaigns', function ($value) use ($campaign) {
             expect($value)->count(1);
-            expect($value)->first()->id->toBe(6);
+            expect($value)->first()->id->toBe($campaign->id);
             return true;
         });
 });
@@ -48,14 +48,14 @@ it('should be able to search by id', function () {
         'deleted_at' => null
     ]);
 
-    Campaign::factory()->create([
+    $campaign = Campaign::factory()->create([
         'name' => 'foo bar 2',
         'deleted_at' => null
     ]);
-    get(route('campaigns.index', ['search' => 2]))
-    ->assertViewHas('campaigns', function ($value) {
+    get(route('campaigns.index', ['search' => $campaign->id]))
+    ->assertViewHas('campaigns', function ($value) use ($campaign) {
         expect($value)->count(1);
-        expect(($value)->first()->id)->toBe(2);
+        expect(($value)->first()->id)->toBe($campaign->id);
         return true;
     });
 });
